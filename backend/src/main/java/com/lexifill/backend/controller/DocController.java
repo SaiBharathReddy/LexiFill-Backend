@@ -107,7 +107,7 @@ public class DocController {
 
             XWPFDocument document = new XWPFDocument(new ByteArrayInputStream(fileBytes));
 
-            // ✅ Fill everywhere
+            //Fill everywhere
             fillParagraphs(document.getParagraphs(), placeholders, answers);
 
             for (XWPFTable table : document.getTables()) {
@@ -141,7 +141,7 @@ public class DocController {
         }
     }
 
-    /** ✅ Helper method to fill placeholders safely */
+    /** Helper method to fill placeholders safely */
     private void fillParagraphs(List<XWPFParagraph> paragraphs, List<Map<String, String>> placeholders, Map<String, String> answers) {
         for (XWPFParagraph para : paragraphs) {
             List<XWPFRun> runs = para.getRuns();
