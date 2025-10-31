@@ -60,6 +60,10 @@ public class DocController {
 //            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
 //        }
 //    }
+    @GetMapping("/health")
+    public String getHealth(){
+        return "OK";
+    }
     @PostMapping("/parse")
     public ResponseEntity<Map<String, Object>> parseDocx(@RequestParam("file") MultipartFile file) {
         try {
