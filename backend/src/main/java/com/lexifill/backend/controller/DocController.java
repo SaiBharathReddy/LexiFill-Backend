@@ -12,9 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = {"*"})
 @RestController
@@ -26,40 +23,6 @@ public class DocController {
 
     private final Map<String, byte[]> uploadedFiles = new HashMap<>();
     private final Map<String, String> uploadedFileNames = new HashMap<>();
-
-    // Upload DOCX and parse full text
-//    @PostMapping("/parse")
-//    public ResponseEntity<Map<String, Object>> parseDocx(@RequestParam("file") MultipartFile file) {
-//        try {
-//            byte[] fileBytes = file.getBytes();
-//            String fileId = UUID.randomUUID().toString();
-//            uploadedFiles.put(fileId, fileBytes);
-//            uploadedFileNames.put(fileId, file.getOriginalFilename());
-//
-//            XWPFDocument document = new XWPFDocument(new ByteArrayInputStream(fileBytes));
-//
-//            StringBuilder fullText = new StringBuilder();
-//            for (XWPFParagraph para : document.getParagraphs()) {
-//                fullText.append(para.getText()).append("\n");
-//            }
-//            document.close();
-//
-//            // Ask LLM to extract contextual placeholders
-//            List<Map<String, String>> placeholders = huggingFaceService.extractPlaceholders(fullText.toString());
-//
-//            Map<String, Object> response = new HashMap<>();
-//            response.put("fileId", fileId);
-//            response.put("fileName", file.getOriginalFilename());
-//            response.put("placeholders", placeholders); // each has placeholder, context, question
-//            response.put("text", fullText.toString());
-//
-//            return ResponseEntity.ok(response);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
-//        }
-//    }
     @GetMapping("/health")
     public String getHealth(){
         return "OK";
@@ -100,7 +63,7 @@ public class DocController {
     // Fill placeholders using context-aware replacement
     @PostMapping("/fill")
     public ResponseEntity<byte[]> fillDoc(@RequestBody Map<String, Object> payload) {
-        System.out.println(payload);
+        //System.out.println(payload);
         try {
             String fileId = (String) payload.get("fileId");
             Map<String, String> answers = (Map<String, String>) payload.get("answers");
@@ -164,7 +127,7 @@ public class DocController {
                 String placeholder = ph.get("placeholder");
                 String key = ph.get("key");
                 String answer = answers.get(key);
-                System.out.println("***********"+placeholder+" "+key+"******************");
+                //System.out.println("***********"+placeholder+" "+key+"******************");
 
                 if (answer != null) {
                     fullText = fullText.replaceAll("(?i)" + java.util.regex.Pattern.quote(placeholder), answer);

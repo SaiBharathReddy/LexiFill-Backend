@@ -107,7 +107,7 @@ Begin your response with [
         }
 
         String content = choices.get(0).path("message").path("content").asText().trim();
-        System.out.println("LLM raw output: " + content);
+        //System.out.println("LLM raw output: " + content);
 
         // Extract clean JSON
         int start = content.indexOf('[');
